@@ -5,9 +5,9 @@
  *
  * DM45 BLE central dongle — Seeed XIAO nRF52840.
  *
- * The dongle has no physical keyswitch matrix.  It receives HID key
+ * The dongle has no physical keyswitch matrix. It receives HID key
  * reports over BLE from both peripheral halves and forwards them to
- * the host via USB.  A mock kscan satisfies ZMK's requirement that
+ * the host via USB. A mock kscan satisfies ZMK's requirement that
  * every keyboard has a scan driver.
  */
 
@@ -20,9 +20,8 @@
     };
 
     /* ------------------------------------------------------------------ *
-     *  Full-keyboard transform (both halves, 10 logical columns).         *
-     *  Same layout as dm45.dtsi — duplicated here so the dongle           *
-     *  overlay is self-contained and does not pull in &pro_micro.         *
+     * Full-keyboard transform (both halves, 10 logical columns).         *
+     * Same layout as dm45.dtsi.                                          *
      * ------------------------------------------------------------------ */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
@@ -40,9 +39,9 @@
     };
 
     /* ------------------------------------------------------------------ *
-     *  Mock kscan — no physical matrix on the dongle.                     *
+     * Mock kscan — 确保符合 ZMK 核心驱动对于 Studio 功能的编译要求       *
      * ------------------------------------------------------------------ */
-    mock_kscan: kscan_0 {
+    mock_kscan: kscan {
         compatible = "zmk,kscan-mock";
         columns = <0>;
         rows = <0>;
