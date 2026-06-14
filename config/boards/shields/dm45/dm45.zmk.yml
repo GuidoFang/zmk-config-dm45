@@ -1,0 +1,13 @@
+file_format: "1"
+id: dm45
+name: DM45
+type: shield
+url: https://github.com/guidofang/dm45
+requires: [pro_micro, seeeduino_xiao_ble]
+features:
+  - keys
+  - studio
+siblings:
+  - dm45_left
+  - dm45_right
+  - dm45_dongle

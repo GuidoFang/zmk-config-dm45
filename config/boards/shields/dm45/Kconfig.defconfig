@@ -1,0 +1,25 @@
+# Copyright (c) 2024 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if SHIELD_DM45_DONGLE
+
+config ZMK_KEYBOARD_NAME
+	default "DM45 Dongle"
+
+config ZMK_SPLIT_ROLE_CENTRAL
+	default y
+
+config ZMK_USB
+	default y
+
+endif
+
+if SHIELD_DM45_LEFT || SHIELD_DM45_RIGHT || SHIELD_DM45_DONGLE
+
+config ZMK_SPLIT
+	default y
+
+config ZMK_BLE
+	default y
+
+endif

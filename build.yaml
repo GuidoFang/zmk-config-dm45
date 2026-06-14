@@ -1,0 +1,15 @@
+# This file generates the GitHub Actions matrix.
+# DM45 split keyboard with:
+#   - Seeed XIAO nRF52840 as BLE central dongle
+#   - Two nice!nano v2 as left/right peripherals
+---
+include:
+  - board: nice_nano_v2
+    shield: dm45_left
+  - board: nice_nano_v2
+    shield: dm45_right
+  - board: seeeduino_xiao_ble
+    shield: dm45_dongle
+    snippet: studio-rpc-usb-uart
+  - board: nice_nano_v2
+    shield: settings_reset
