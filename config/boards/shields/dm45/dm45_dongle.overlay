@@ -17,11 +17,23 @@
     chosen {
         zmk,kscan = &mock_kscan;
         zmk,matrix-transform = &default_transform;
+        zmk,physical-layout = &default_layout;
+    };
+
+    /* ------------------------------------------------------------------ *
+     * Physical Layout — ZMK Studio 编译器所需的物理布局声明                *
+     * ------------------------------------------------------------------ */
+    default_layout: default_layout {
+        compatible = "zmk,physical-layout";
+        display-name = "Default Layout";
+        transform = <&default_transform>;
+        kscan = <&mock_kscan>;
     };
 
     /* ------------------------------------------------------------------ *
      * Full-keyboard transform (both halves, 10 logical columns).         *
-     * Same layout as dm45.dtsi.                                          *
+     * Same layout as dm45.dtsi — duplicated here so the dongle           *
+     * overlay is self-contained and does not pull in &pro_micro.         *
      * ------------------------------------------------------------------ */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
