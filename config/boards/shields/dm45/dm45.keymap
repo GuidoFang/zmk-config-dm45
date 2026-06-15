@@ -86,7 +86,7 @@
         };
 
         /* ============================================================== *
-         * RAISE  —  Function Keys + Arrows + Media (严格 46 颗键，带 Studio 解锁键) *
+         * RAISE  —  Function Keys + Arrows + Media (严格 46 颗键)                   *
          * ============================================================== */
         raise_layer {
             label = "RAISE";
@@ -94,7 +94,7 @@
     &kp F1    &kp F2    &kp F3    &kp F4    &kp F5        &kp F6    &kp F7    &kp F8    &kp F9    &kp F10
     &kp LEFT  &kp UP    &kp DOWN  &kp RIGHT &kp LPAR      &kp RPAR  &kp C_PREV &kp C_PP &kp C_NEXT &trans
     &trans    &trans    &trans    &trans    &trans        &trans    &trans    &trans    &trans    &trans
-              &trans    &trans                                      &kp EQUAL &studio_unlock
+              &trans    &trans                                      &kp EQUAL &trans
                                   &trans    &trans        &trans    &trans
                                   &trans    &trans        &trans    &trans
                                   &trans    &trans        &trans    &trans
