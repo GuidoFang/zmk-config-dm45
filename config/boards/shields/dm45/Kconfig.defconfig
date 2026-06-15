@@ -4,7 +4,7 @@
 if SHIELD_DM45_DONGLE
 
 config ZMK_KEYBOARD_NAME
-	default "DM45 Dongle"
+	default "DM45"
 
 config ZMK_SPLIT_ROLE_CENTRAL
 	default y
@@ -12,7 +12,7 @@ config ZMK_SPLIT_ROLE_CENTRAL
 config ZMK_USB
 	default y
 
-endif
+endif  # SHIELD_DM45_DONGLE
 
 if SHIELD_DM45_LEFT || SHIELD_DM45_RIGHT || SHIELD_DM45_DONGLE
 
@@ -22,4 +22,4 @@ config ZMK_SPLIT
 config ZMK_BLE
 	default y
 
-endif
+endif  # SHIELD_DM45_LEFT || SHIELD_DM45_RIGHT || SHIELD_DM45_DONGLE

@@ -3,117 +3,21 @@
  *
  * SPDX-License-Identifier: MIT
  *
- * DM45 BLE central dongle — Seeed XIAO nRF52840.
+ * DM45 BLE central dongle — nice!nano v2 (Pro Micro footprint).
  *
- * The dongle has no physical keyswitch matrix. It receives HID key
- * reports over BLE from both peripheral halves and forwards them to
- * the host via USB. A mock kscan satisfies ZMK's requirement that
- * every keyboard has a scan driver.
+ * Includes dm45.dtsi to inherit the default_transform, then overrides
+ * only zmk,kscan with a mock kscan (no physical matrix on the dongle).
+ * This is the exact same pattern used by zmk-solfe-dongle.
  */
 
-#include <dt-bindings/zmk/matrix_transform.h>
-#include <physical_layouts.dtsi>
+#include "dm45.dtsi"
 
 / {
     chosen {
         zmk,kscan = &mock_kscan;
-        zmk,matrix-transform = &default_transform;
-        zmk,physical-layout = &default_layout;
     };
 
-    /* ------------------------------------------------------------------ *
-     * ⚠️ 关键修正：所有 compatible = "zmk,physical-layout" 的子节点       *
-     * 必须嵌套在 compatible = "zmk,physical-layouts" 的父容器中！          *
-     * ------------------------------------------------------------------ */
-    physical-layouts {
-        compatible = "zmk,physical-layouts";
-
-        default_layout: default_layout {
-            compatible = "zmk,physical-layout";
-            display-name = "Default Layout";
-            transform = <&default_transform>;
-            kscan = <&mock_kscan>;
-
-            // 严格定义 46 颗按键的二维排布 (w h x y rot rx ry)，用于 Studio 画布渲染
-            keys
-                = <&key_physical_attrs 100 100    0    0 0 0 0> // RC(0,0) - 左字母顶行
-                , <&key_physical_attrs 100 100  100    0 0 0 0> // RC(0,1)
-                , <&key_physical_attrs 100 100  200    0 0 0 0> // RC(0,2)
-                , <&key_physical_attrs 100 100  300    0 0 0 0> // RC(0,3)
-                , <&key_physical_attrs 100 100  400    0 0 0 0> // RC(0,4)
-                , <&key_physical_attrs 100 100  500    0 0 0 0> // RC(0,5) - 右字母顶行
-                , <&key_physical_attrs 100 100  600    0 0 0 0> // RC(0,6)
-                , <&key_physical_attrs 100 100  700    0 0 0 0> // RC(0,7)
-                , <&key_physical_attrs 100 100  800    0 0 0 0> // RC(0,8)
-                , <&key_physical_attrs 100 100  900    0 0 0 0> // RC(0,9)
-
-                , <&key_physical_attrs 100 100    0  100 0 0 0> // RC(1,0) - 左字母中行
-                , <&key_physical_attrs 100 100  100  100 0 0 0> // RC(1,1)
-                , <&key_physical_attrs 100 100  200  100 0 0 0> // RC(1,2)
-                , <&key_physical_attrs 100 100  300  100 0 0 0> // RC(1,3)
-                , <&key_physical_attrs 100 100  400  100 0 0 0> // RC(1,4)
-                , <&key_physical_attrs 100 100  500  100 0 0 0> // RC(1,5) - 右字母中行
-                , <&key_physical_attrs 100 100  600  100 0 0 0> // RC(1,6)
-                , <&key_physical_attrs 100 100  700  100 0 0 0> // RC(1,7)
-                , <&key_physical_attrs 100 100  800  100 0 0 0> // RC(1,8)
-                , <&key_physical_attrs 100 100  900  100 0 0 0> // RC(1,9)
-
-                , <&key_physical_attrs 100 100    0  200 0 0 0> // RC(2,0) - 左字母底行
-                , <&key_physical_attrs 100 100  100  200 0 0 0> // RC(2,1)
-                , <&key_physical_attrs 100 100  200  200 0 0 0> // RC(2,2)
-                , <&key_physical_attrs 100 100  300  200 0 0 0> // RC(2,3)
-                , <&key_physical_attrs 100 100  400  200 0 0 0> // RC(2,4)
-                , <&key_physical_attrs 100 100  500  200 0 0 0> // RC(2,5) - 右字母底行
-                , <&key_physical_attrs 100 100  600  200 0 0 0> // RC(2,6)
-                , <&key_physical_attrs 100 100  700  200 0 0 0> // RC(2,7)
-                , <&key_physical_attrs 100 100  800  200 0 0 0> // RC(2,8)
-                , <&key_physical_attrs 100 100  900  200 0 0 0> // RC(2,9)
-
-                , <&key_physical_attrs 100 100  100  300 0 0 0> // RC(3,1) - 左内侧上侧键
-                , <&key_physical_attrs 100 100  200  300 0 0 0> // RC(3,2) - 左内侧下侧键
-                , <&key_physical_attrs 100 100  700  300 0 0 0> // RC(3,7) - 右内侧下侧键
-                , <&key_physical_attrs 100 100  800  300 0 0 0> // RC(3,8) - 右内侧上侧键
-
-                , <&key_physical_attrs 100 100  300  300 0 0 0> // RC(3,3) - 左大拇指上左
-                , <&key_physical_attrs 100 100  400  300 0 0 0> // RC(3,4) - 左大拇指上右
-                , <&key_physical_attrs 100 100  500  300 0 0 0> // RC(3,5) - 右大拇指上左
-                , <&key_physical_attrs 100 100  600  300 0 0 0> // RC(3,6) - 右大拇指上右
-
-                , <&key_physical_attrs 100 100  300  400 0 0 0> // RC(4,3) - 左大拇指下左
-                , <&key_physical_attrs 100 100  400  400 0 0 0> // RC(4,4) - 左大拇指下右
-                , <&key_physical_attrs 100 100  500  400 0 0 0> // RC(4,7) - 右大拇指下左
-                , <&key_physical_attrs 100 100  600  400 0 0 0> // RC(4,8) - 右大拇指下右
-
-                , <&key_physical_attrs 100 100  100  400 0 0 0> // RC(4,1) - 左最下排辅助键1
-                , <&key_physical_attrs 100 100  200  400 0 0 0> // RC(4,2) - 左最下排辅助键2
-                , <&key_physical_attrs 100 100  700  400 0 0 0> // RC(4,5) - 右最下排辅助键1
-                , <&key_physical_attrs 100 100  800  400 0 0 0> // RC(4,6) - 右最下排辅助键2
-                ;
-        };
-    };
-
-    /* ------------------------------------------------------------------ *
-     * Full-keyboard transform (both halves, 10 logical columns).         *
-     * ------------------------------------------------------------------ */
-    default_transform: keymap_transform_0 {
-        compatible = "zmk,matrix-transform";
-        columns = <10>;
-        rows = <5>;
-        map = <
-            RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(0,4)     RC(0,5) RC(0,6) RC(0,7) RC(0,8) RC(0,9)
-            RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(1,4)     RC(1,5) RC(1,6) RC(1,7) RC(1,8) RC(1,9)
-            RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4)     RC(2,5) RC(2,6) RC(2,7) RC(2,8) RC(2,9)
-                    RC(3,1) RC(3,2)                                     RC(3,7) RC(3,8)
-                                    RC(3,3) RC(3,4)     RC(3,5) RC(3,6)
-                                    RC(4,3) RC(4,4)     RC(4,7) RC(4,8)
-                                    RC(4,1) RC(4,2)     RC(4,5) RC(4,6)
-        >;
-    };
-
-    /* ------------------------------------------------------------------ *
-     * Mock kscan — 确保符合 ZMK 核心驱动对于 Studio 功能的编译要求       *
-     * ------------------------------------------------------------------ */
-    mock_kscan: kscan {
+    mock_kscan: mock_kscan {
         compatible = "zmk,kscan-mock";
         columns = <0>;
         rows = <0>;

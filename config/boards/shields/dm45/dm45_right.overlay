@@ -5,12 +5,11 @@
  *
  * DM45 right-hand peripheral — nice!nano v2 (Pro Micro footprint).
  *
- * Matrix wiring (mirrored — cols are reversed vs left, rows same order):
+ * Matrix wiring (mirrored — cols reversed vs left, rows same order):
  *   Row 0 … Row 4  →  D9, D8, D7, D6, D5
  *   Col 0 … Col 4  →  D10, D16, D14, D15, A3(D18)
  *
- * The col-offset = <5> tells ZMK to map this half's local cols 0-4
- * to logical keymap columns 5-9.
+ * col-offset = <5> maps local cols 0-4 to logical keymap cols 5-9.
  */
 
 #include "dm45.dtsi"
@@ -20,6 +19,8 @@
 };
 
 &kscan0 {
+    compatible = "zmk,kscan-gpio-matrix";
+
     row-gpios
         = <&pro_micro  9 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
         , <&pro_micro  8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>

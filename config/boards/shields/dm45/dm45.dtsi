@@ -5,8 +5,13 @@
  *
  * DM45 — 46-key split dactyl-manuform-style keyboard
  * Matrix: 5 rows x 5 cols per side, COL2ROW
- * Left  peripheral: rows 0-4  cols 0-4  → keymap cols 0-4
- * Right peripheral: rows 0-4  cols 0-4  → keymap cols 5-9 (col-offset = 5)
+ *
+ * Left  peripheral: local rows 0-4  cols 0-4  → keymap cols 0-4
+ * Right peripheral: local rows 0-4  cols 0-4  → keymap cols 5-9 (col-offset = 5)
+ *
+ * NOTE: kscan0 has NO `compatible` here — the peripheral overlays add it.
+ *       This allows the dongle overlay to include this file, inherit the
+ *       transform, and override only zmk,kscan (Solfe pattern).
  */
 
 #include <dt-bindings/zmk/matrix_transform.h>
@@ -15,33 +20,29 @@
     chosen {
         zmk,kscan = &kscan0;
         zmk,matrix-transform = &default_transform;
-        zmk,physical-layout = &default_layout;
     };
 
     /* ------------------------------------------------------------------ *
-     * Physical Layout — ZMK Studio 编译器所需的物理布局声明                *
-     * ------------------------------------------------------------------ */
-    default_layout: default_layout {
-        compatible = "zmk,physical-layout";
-        display-name = "Default Layout";
-        transform = <&default_transform>;
-        kscan = <&kscan0>;
-    };
-
-    /* ------------------------------------------------------------------ *
-     * Default transform — left-half view.                                *
-     * The right overlay sets col-offset = <5> so its local cols 0-4      *
-     * are mapped to logical cols 5-9.                                    *
-     * *
-     * Logical key positions (per side, before offset):                   *
-     * *
-     * RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(0,4)       top alpha          *
-     * RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(1,4)       home row           *
-     * RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4)       bottom row         *
-     * RC(3,1) RC(3,2)                         inner column       *
-     * RC(3,3) RC(3,4)         thumb top          *
-     * RC(4,3) RC(4,4) thumb bottom       *
-     * RC(4,1) RC(4,2)                 inner column lower *
+     *  Default transform — full-keyboard view (10 logical columns).       *
+     *  The right overlay sets col-offset = <5> so its local cols 0-4      *
+     *  map to logical cols 5-9.                                           *
+     *                                                                    *
+     *  Logical key positions:                                             *
+     *                                                                     *
+     *  RC(0,0) RC(0,1) RC(0,2) RC(0,3) RC(0,4)     top alpha (left)     *
+     *  RC(0,5) RC(0,6) RC(0,7) RC(0,8) RC(0,9)     top alpha (right)    *
+     *  RC(1,0) RC(1,1) RC(1,2) RC(1,3) RC(1,4)     home row  (left)     *
+     *  RC(1,5) RC(1,6) RC(1,7) RC(1,8) RC(1,9)     home row  (right)    *
+     *  RC(2,0) RC(2,1) RC(2,2) RC(2,3) RC(2,4)     bottom row (left)   *
+     *  RC(2,5) RC(2,6) RC(2,7) RC(2,8) RC(2,9)     bottom row (right)  *
+     *          RC(3,1) RC(3,2)                       inner col  (left)   *
+     *                                  RC(3,7) RC(3,8) inner col  (right) *
+     *                  RC(3,3) RC(3,4)               thumb top  (left)   *
+     *                  RC(3,5) RC(3,6)               thumb top  (right)  *
+     *                          RC(4,3) RC(4,4)       thumb bot  (left)   *
+     *                          RC(4,7) RC(4,8)       thumb bot  (right)  *
+     *                  RC(4,1) RC(4,2)               inner low  (left)   *
+     *                  RC(4,5) RC(4,6)               inner low  (right)  *
      * ------------------------------------------------------------------ */
     default_transform: keymap_transform_0 {
         compatible = "zmk,matrix-transform";
@@ -59,12 +60,12 @@
     };
 
     /* ------------------------------------------------------------------ *
-     * kscan0 skeleton — the actual row/col GPIOs are filled in by        *
-     * the left/right overlays.                                           *
+     *  kscan0 skeleton — NO compatible here (Solfe pattern).              *
+     *  Peripheral overlays add compatible + row-gpios + col-gpios.        *
+     *  The dongle overlay overrides zmk,kscan with a mock kscan.          *
      * ------------------------------------------------------------------ */
     kscan0: kscan {
-        compatible = "zmk,kscan-gpio-matrix";
-        label = "KSCAN";
         diode-direction = "col2row";
+        wakeup-source;
     };
 };

@@ -5,7 +5,7 @@
  *
  * DM45 left-hand peripheral — nice!nano v2 (Pro Micro footprint).
  *
- * Matrix wiring (physical cols → nice!nano pins):
+ * Matrix wiring:
  *   Row 0 … Row 4  →  D9, D8, D7, D6, D5
  *   Col 0 … Col 4  →  A3(D18), D15, D14, D16, D10
  */
@@ -13,6 +13,8 @@
 #include "dm45.dtsi"
 
 &kscan0 {
+    compatible = "zmk,kscan-gpio-matrix";
+
     row-gpios
         = <&pro_micro  9 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>
         , <&pro_micro  8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)>

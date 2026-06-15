@@ -1,15 +1,23 @@
-# This file generates the GitHub Actions matrix.
-# DM45 split keyboard with:
-#   - Seeed XIAO nRF52840 as BLE central dongle
-#   - Two nice!nano v2 as left/right peripherals
+# DM45 split keyboard — ZMK build matrix (v0.3.0)
+#
+# All three targets use nice_nano_v2, matching the "requires: [pro_micro]"
+# in dm45.zmk.yml (same pattern as zmk-solfe-dongle).
+#
+# Architecture:
+#   Dongle (central)   — BLE central, USB HID to host, ZMK Studio
+#   Left  (peripheral) — BLE peripheral, physical keyswitch matrix
+#   Right (peripheral) — BLE peripheral, physical keyswitch matrix
 ---
 include:
   - board: nice_nano_v2
     shield: dm45_left
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
   - board: nice_nano_v2
     shield: dm45_right
-  - board: seeeduino_xiao_ble
+    cmake-args: -DCONFIG_ZMK_SPLIT_ROLE_CENTRAL=n
+  - board: nice_nano_v2
     shield: dm45_dongle
     snippet: studio-rpc-usb-uart
+    cmake-args: -DCONFIG_ZMK_STUDIO=y
   - board: nice_nano_v2
     shield: settings_reset
