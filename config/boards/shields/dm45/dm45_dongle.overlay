@@ -8,19 +8,105 @@
  * Includes dm45.dtsi to inherit the default_transform, then overrides
  * only zmk,kscan with a mock kscan (no physical matrix on the dongle).
  * This is the exact same pattern used by zmk-solfe-dongle.
+ *
+ * NOTE: physical-layouts block is REQUIRED because ZMK_USB selects
+ * ZMK_STUDIO on central builds — the .conf =n cannot override a Kconfig
+ * select, so physical_layouts.c is always compiled and needs a valid
+ * zmk,physical-layout reference to link.
  */
+
+#include <physical_layouts.dtsi>
 
 #include "dm45.dtsi"
 
 / {
     chosen {
         zmk,kscan = &mock_kscan;
+        zmk,physical-layout = &default_layout;
     };
 
     mock_kscan: mock_kscan {
-        compatible = "zmk,kscan_mock";
+        compatible = "zmk,kscan-mock";
         columns = <0>;
         rows = <0>;
         events = <0>;
+    };
+
+    /* ------------------------------------------------------------------ *
+     * Physical layout — 46 keys matching the default_transform map.       *
+     * Required by ZMK Studio (physical_layouts.c) which is force-enabled  *
+     * via ZMK_USB select in ZMK v0.3.0.                                   *
+     * ------------------------------------------------------------------ */
+    physical-layouts {
+        compatible = "zmk,physical-layouts";
+
+        default_layout: default_layout {
+            compatible = "zmk,physical-layout";
+            display-name = "Default Layout";
+            transform = <&default_transform>;
+            kscan = <&mock_kscan>;
+
+            keys
+                // Row 0 — top alpha
+                = <&key_physical_attrs 100 100    0    0 0 0 0>  // RC(0,0) Q
+                , <&key_physical_attrs 100 100  100    0 0 0 0>  // RC(0,1) W
+                , <&key_physical_attrs 100 100  200    0 0 0 0>  // RC(0,2) E
+                , <&key_physical_attrs 100 100  300    0 0 0 0>  // RC(0,3) R
+                , <&key_physical_attrs 100 100  400    0 0 0 0>  // RC(0,4) T
+                , <&key_physical_attrs 100 100  500    0 0 0 0>  // RC(0,5) Y
+                , <&key_physical_attrs 100 100  600    0 0 0 0>  // RC(0,6) U
+                , <&key_physical_attrs 100 100  700    0 0 0 0>  // RC(0,7) I
+                , <&key_physical_attrs 100 100  800    0 0 0 0>  // RC(0,8) O
+                , <&key_physical_attrs 100 100  900    0 0 0 0>  // RC(0,9) P
+
+                // Row 1 — home row
+                , <&key_physical_attrs 100 100    0  100 0 0 0>  // RC(1,0) A
+                , <&key_physical_attrs 100 100  100  100 0 0 0>  // RC(1,1) S
+                , <&key_physical_attrs 100 100  200  100 0 0 0>  // RC(1,2) D
+                , <&key_physical_attrs 100 100  300  100 0 0 0>  // RC(1,3) F
+                , <&key_physical_attrs 100 100  400  100 0 0 0>  // RC(1,4) G
+                , <&key_physical_attrs 100 100  500  100 0 0 0>  // RC(1,5) H
+                , <&key_physical_attrs 100 100  600  100 0 0 0>  // RC(1,6) J
+                , <&key_physical_attrs 100 100  700  100 0 0 0>  // RC(1,7) K
+                , <&key_physical_attrs 100 100  800  100 0 0 0>  // RC(1,8) L
+                , <&key_physical_attrs 100 100  900  100 0 0 0>  // RC(1,9) ;
+
+                // Row 2 — bottom alpha
+                , <&key_physical_attrs 100 100    0  200 0 0 0>  // RC(2,0) Z
+                , <&key_physical_attrs 100 100  100  200 0 0 0>  // RC(2,1) X
+                , <&key_physical_attrs 100 100  200  200 0 0 0>  // RC(2,2) C
+                , <&key_physical_attrs 100 100  300  200 0 0 0>  // RC(2,3) V
+                , <&key_physical_attrs 100 100  400  200 0 0 0>  // RC(2,4) B
+                , <&key_physical_attrs 100 100  500  200 0 0 0>  // RC(2,5) N
+                , <&key_physical_attrs 100 100  600  200 0 0 0>  // RC(2,6) M
+                , <&key_physical_attrs 100 100  700  200 0 0 0>  // RC(2,7) ,
+                , <&key_physical_attrs 100 100  800  200 0 0 0>  // RC(2,8) .
+                , <&key_physical_attrs 100 100  900  200 0 0 0>  // RC(2,9) /
+
+                // Row 3 — inner column keys
+                , <&key_physical_attrs 100 100  100  300 0 0 0>  // RC(3,1) [
+                , <&key_physical_attrs 100 100  200  300 0 0 0>  // RC(3,2) ]
+                , <&key_physical_attrs 100 100  700  300 0 0 0>  // RC(3,7) +
+                , <&key_physical_attrs 100 100  800  300 0 0 0>  // RC(3,8) =
+
+                // Row 3 (cont.) — thumb top
+                , <&key_physical_attrs 100 100  300  300 0 0 0>  // RC(3,3) RAISE/TAB
+                , <&key_physical_attrs 100 100  400  300 0 0 0>  // RC(3,4) SPACE
+                , <&key_physical_attrs 100 100  500  300 0 0 0>  // RC(3,5) RET
+                , <&key_physical_attrs 100 100  600  300 0 0 0>  // RC(3,6) LOWER/ESC
+
+                // Row 4 — thumb bottom
+                , <&key_physical_attrs 100 100  300  400 0 0 0>  // RC(4,3) TAB
+                , <&key_physical_attrs 100 100  400  400 0 0 0>  // RC(4,4) HOME
+                , <&key_physical_attrs 100 100  500  400 0 0 0>  // RC(4,7) END
+                , <&key_physical_attrs 100 100  600  400 0 0 0>  // RC(4,8) DEL
+
+                // Row 4 (cont.) — inner low
+                , <&key_physical_attrs 100 100  100  400 0 0 0>  // RC(4,1) BSPC
+                , <&key_physical_attrs 100 100  200  400 0 0 0>  // RC(4,2) `
+                , <&key_physical_attrs 100 100  700  400 0 0 0>  // RC(4,5) LGUI
+                , <&key_physical_attrs 100 100  800  400 0 0 0>  // RC(4,6) LALT
+                ;
+        };
     };
 };
