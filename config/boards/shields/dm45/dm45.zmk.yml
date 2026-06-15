@@ -6,7 +6,6 @@ url: https://github.com/guidofang/dm45
 requires: [pro_micro]
 features:
   - keys
-  - studio
 siblings:
   - dm45_left
   - dm45_right
